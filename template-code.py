@@ -29,7 +29,7 @@ for i in range(n):
 			pos[i][j].append([])
 			for t in range(T+1):
 				pos[i][j][k].append([])
-				temp = Bool("p{}{}{}{}".format(i,j,k,t))
+				temp = Bool("p{}_{}_{}_{}".format(i,j,k,t))
 				pos[i][j][k][t] = temp
 
 # creating array for shifts
@@ -48,16 +48,16 @@ for i in range(n):
 		colu[i].append([])
 		cold[i].append([])
 
-		temp = Bool("r{}r{}".format(i,j))
+		temp = Bool("r{}_r{}".format(i,j))
 		rowr[i][j] = temp
 
-		temp = Bool("r{}l{}".format(i,j))
+		temp = Bool("r{}_l{}".format(i,j))
 		rowl[i][j] = temp
 
-		temp = Bool("c{}u{}".format(i,j))
+		temp = Bool("c{}_u{}".format(i,j))
 		colu[i][j] = temp
 
-		temp = Bool("c{}d{}".format(i,j))
+		temp = Bool("c{}_d{}".format(i,j))
 		cold[i][j] = temp
 
 # Add Initial conditions
@@ -101,23 +101,12 @@ for m in range(n):
 				temp1.append(Implies(pos[m][j][k][t],pos[m][(j+1)%n][k][t+1]))
 				temp2.append(Implies(pos[m][j][k][t],pos[m][(n+j-1)%n][k][t+1]))
 				temp3.append(Implies(pos[j][m][k][t],pos[(n+j-1)%n][m][k][t+1]))
-				temp4.append(Implies(pos[j][m][k][t],pos[(j+1)%n][m][k][t+1]))		
+				temp4.append(Implies(pos[j][m][k][t],pos[(j+1)%n][m][k][t+1]))
 		s.add(Implies(rowr[m][t],And(*temp1)))
 		s.add(Implies(rowl[m][t],And(*temp2)))
 		s.add(Implies(colu[m][t],And(*temp3)))
 		s.add(Implies(cold[m][t],And(*temp4)))
 
-# If movement is False, copy the position from current to next state
-# for m in range(n):
-# 	for t in range(T):
-# 		temp1 = []
-# 		temp2 = []
-# 		for j in range(n):
-# 			for k in range(n*n):
-# 				temp1.append(Implies(pos[m][j][k][t],pos[m][j][k][t+1]))
-# 				temp2.append(Implies(pos[j][m][k][t],pos[j][m][k][t+1]))
-		# s.add(Implies(And(Not(rowr[m][t]),Not(rowl[m][t])),And(*temp1)))
-		# s.add(Implies(And(Not(colu[m][t]),Not(cold[m][t])),And(*temp2)))
 for t in range(T):
 	for i in range(n):
 		for j in range(n):
@@ -126,7 +115,6 @@ for t in range(T):
 				temp.append(Implies(pos[i][j][k][t], pos[i][j][k][t+1]))
 			s.add(Implies(And(Not(rowr[i][t]), Not(rowl[i][t]), Not(colu[j][t]), Not(cold[j][t])), And(*temp)))
 
-#print(s)		
 x = s.check()
 # print(x)
 if x == sat:
@@ -146,10 +134,10 @@ if x == sat:
 			elif m[cold[i][t]] :
 				print("{}{}".format(i,'d'))
 				break
-	
+
 
 else:
 	print("unsat")
 
-	
+
 # 	# Output the moves
